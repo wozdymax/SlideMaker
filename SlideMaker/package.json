@@ -1,0 +1,20 @@
+{
+  "name": "slidemaker",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+   "dev": "vite",
+   "build": "tsc -b && vite build",
+   "preview": "vite preview",
+   "lint": "run-s lint:*",
+   "lint:eslint": "eslint .",
+   "lint:prettier": "prettier . --check",
+   "fix": "run-s fix:*",
+   "fix:eslint": "eslint . --fix",
+   "fix:prettier": "prettier . --write",
+   "test": "jest"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": ""
+}
