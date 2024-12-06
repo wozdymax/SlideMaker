@@ -7,15 +7,20 @@
 }
 
 .title {
-    background-color: transparent;
+    background-color: #9fa0af;
+    color:#18195b;
     border: none;
     font-size: 16px;
     width: 250px;
     margin: 0 0 10px 5px;
 }
 
+.buttons {
+    display: flex;
+    gap: 6px;
+}
+
 .button {
-    margin: 0 3px;
     background-color: lightsteelblue;
     color: #202179;
     border: 3px solid #18195b;

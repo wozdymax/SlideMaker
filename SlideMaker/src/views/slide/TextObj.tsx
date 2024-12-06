@@ -4,8 +4,9 @@ import {CSSProperties} from "react";
 type TextObjectProps = {
     textObject: TextObj,
     scale?: number,
+    isSelected: boolean,
 }
-const TextObject = ({textObject, scale = 1}: TextObjectProps) => {
+const TextObject = ({textObject, scale = 1, isSelected}: TextObjectProps) => {
     const textObjectStyles: CSSProperties = {
         position: 'absolute',
         top: `${textObject.position.y * scale}px`,
@@ -15,8 +16,12 @@ const TextObject = ({textObject, scale = 1}: TextObjectProps) => {
         fontSize: `${textObject.fontsize * scale}px`,
         font: `${textObject.font}`,
         color: `${textObject.fontcolor}`,
-        backgroundColor: `${textObject.bgcolor}`
+        backgroundColor: `${textObject.bgcolor}`,
     }
+    if (isSelected) {
+        textObjectStyles.border = '2px solid #0b57d0'
+    }
+
     return (
         <p style={textObjectStyles}>{textObject.textcontent}</p>
     )

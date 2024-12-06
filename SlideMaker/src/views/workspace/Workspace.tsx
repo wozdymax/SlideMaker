@@ -6,10 +6,10 @@ type WorkspaceProps = {
     slide: SlideType,
 }
 
-function Workspace({slide}: WorkspaceProps) {
+const Workspace = ({slide}: WorkspaceProps) => {
     return (
         <div className={styles.workspace}>
-            <Slide slide={slide} isSelected={false} className={""} ></Slide>
+            <Slide slide={slide} isSelected={false} className={""}/>
         </div>
     )
 }

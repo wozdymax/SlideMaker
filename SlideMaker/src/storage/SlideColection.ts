@@ -1,13 +1,17 @@
 import { PresentationType } from "./Presentation"
-import { SlideType } from "./Slide"
+import { createSlide, SlideType } from "./Slide"
 
 const addSlide = (pres: PresentationType, newSlide: SlideType): PresentationType => {
-    return{...pres, slides: [...pres.slides, {...newSlide}]};
+    return{...pres, slides: [...pres.slides, newSlide]};
 }
 
 const deleteSlides = (pres: PresentationType, ids: string[]): PresentationType => {
     const newSlideCollection = pres.slides.filter((slide) => !ids.includes(slide.id));
-    return{...pres, slides: newSlideCollection}
+    if (newSlideCollection.length > 0) {
+        return{...pres, slides: newSlideCollection}
+    }
+    const newSlide: SlideType = createSlide();
+    return{...pres, slides: [newSlide]} 
 }
 
 const moveSlides = (pres: PresentationType, ids: string[], movePosition: number): PresentationType => {
