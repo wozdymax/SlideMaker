@@ -1,0 +1,14 @@
+.slidesList {
+    padding-left: 15px;
+    padding-right: 5px;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow-y: auto;
+    max-height: 80vh;
+}
+
+.item {
+    border-radius: 7px;
+}
