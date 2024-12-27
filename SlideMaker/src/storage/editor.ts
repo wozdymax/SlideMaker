@@ -20,11 +20,14 @@ const dispatch = (modifyFn: Function, payload?: Object) => {
     if (_handler) {
         _handler()
     }
+
+    localStorage.setItem('editorState', JSON.stringify(newEditor));
 }
 
 const addEditorChangeHandler = (handler: Function)  => {
     _handler = handler
 }
+
 
 export {
     getEditor,

@@ -21,7 +21,16 @@
 }
 
 .button {
+    height: auto;
     background-color: lightsteelblue;
     color: #202179;
     border: 3px solid #18195b;
+    border-radius: 8px;
 }
+
+.buton {
+    height: auto;
+    background-color: lightsteelblue;
+    color: #202179;
+}
+

@@ -1,4 +1,4 @@
-import { useMemo } from "react"
+import { useState } from "react"
 import { Button } from "../../components/button/Button"
 import styles from "./TopPanel.module.css"
 import { dispatch } from "../../storage/editor"
@@ -7,15 +7,20 @@ import { BgType, SlideObjType } from "../../storage/Slide"
 import { addSlideEditor } from "../../storage/functions/AddSlide"
 import { deleteSlidesEditor } from "../../storage/functions/DeleteSlides";
 import { addSlideObjEditor } from "../../storage/functions/AddSlideObj";
-import { deleteSlideObj } from "../../storage/functions/DeleteSlideObj";
+import { deleteSlideObjEditor } from "../../storage/functions/DeleteSlideObj";
 import { renamePresentationEditor } from "../../storage/functions/RenamePresentation";
-import { EditBackroundToColor } from "../../storage/functions/EditBackground";
+import { ColorPicker } from "../../components/colorPicker/ColorPicker";
+import { ImageUploader } from "../../components/imageUploader/ImageUploader";
+import { ExportButton } from "../../components/button/ExportButton";
+import { ImportButton } from "../../components/button/ImportButton";
 
 type TopPanelProps = {
     name: string,
 }
 
 const TopPanel = ({name}: TopPanelProps) => {
+    const [isColorPickerOpen, setIsColorPickerOpen] = useState(false);
+
     const onTitleChange: React.ChangeEventHandler = (event) => {
         dispatch(renamePresentationEditor, (event.target as HTMLInputElement).value)
     }
@@ -35,51 +40,37 @@ const TopPanel = ({name}: TopPanelProps) => {
             size: {w: 150, h: 90}, 
             isSelected: false, 
             type: SlideObjType.text, 
-            textcontent: "Добавили текст", 
+            textcontent: "Новый текст", 
             font: "Arial", fontsize: 18, 
             fontcolor: "#000000", 
             bgcolor: null
         })
     }
 
-    const onAddImage = () => {
-        dispatch(addSlideObjEditor, {
-            id: uuidv4(),
-            position: {x: 400, y: 200}, 
-            size: {w: 140, h:140}, 
-            isSelected: false, 
-            type: SlideObjType.image,
-            url: "https://i.pinimg.com/736x/c0/70/8d/c0708d13bed5d20669af1061a22f5bf9.jpg"
-        })
-    }
-
     const onDeleteObj = () => {
-        dispatch(deleteSlideObj)        
+        dispatch(deleteSlideObjEditor)        
     }
 
-    const onEditBackground = () => {
-        dispatch(EditBackroundToColor, {type: BgType.color, color: "#93f4a2"})
+    const handleImport = (data: any) => {
+        localStorage.setItem("editorState", JSON.stringify(data))
+        alert("Документ импортирован.")
     }
-
-    const buttons = useMemo(() => [
-        {id: 'add', text: 'Добавить слайд', onClick: onAddSlide},
-        {id: 'delete', text: 'Удалить слайд', onClick: onDeleteSlides},
-        {id: 'addTxt', text: 'Добавить текст', onClick: onAddText},
-        {id: 'addImg', text: 'Добавить картинку', onClick: onAddImage},
-        {id: 'delObj', text: 'Удалить объект', onClick: onDeleteObj},
-        {id: 'editBg', text: 'Изменить фон', onClick: onEditBackground},
-    ], [])
 
     return(
         <div className={styles.topPanel}>
             <input className={styles.title} type="text" value={name} onChange={onTitleChange}/>
             <div className={styles.buttons}>
-                {buttons.map(button => <Button
-                    key={button.id}
-                    text={button.text}
-                    onClick={button.onClick}
-                    className={styles.button}
-                />)} 
+                <Button text='Добавить слайд' onClick={onAddSlide} className={styles.button} />
+                <Button text='Удалить слайд' onClick={onDeleteSlides} className={styles.button} />
+                <Button text='Добавить текст' onClick={onAddText} className={styles.button} />
+                <ImageUploader />
+                <Button text='Удалить объект' onClick={onDeleteObj} className={styles.button} />
+                <div className={styles.button}>
+                    <Button text='Изменить фон' onClick={() => setIsColorPickerOpen(true)} className={styles.buton} />
+                    <ColorPicker isOpen={isColorPickerOpen} onClose={() => setIsColorPickerOpen(false)} />
+                </div>
+                <ImportButton className={styles.button} onImport={handleImport}/>
+                <ExportButton className={styles.button} presentatationName={name}/>
             </div>
         </div>
     )

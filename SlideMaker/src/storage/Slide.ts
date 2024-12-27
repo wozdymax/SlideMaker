@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
+import { EditorType } from './EditorType';
 
 export type SlideType = {
     id: string;
@@ -128,9 +129,56 @@ const changeBackgroundToImage = (slide: SlideType, img: BgImage): SlideType => {
     return{...slide, background: {...img}};
 }
 
-const changeBackgroundToColor = (slide: SlideType, color: BgColor): SlideType => {
-    return{...slide, background: {...color}};
+const changeBackgroundToColor = (slide: SlideType, newColor: BgColor): SlideType => {
+    return{...slide, background: {...newColor}};
 }
+
+const updateSlideObjPosition = (editor: EditorType, params: {slideObjId: string, newPosition: Position}): EditorType => {
+
+    const activeSlideIndex = editor.presentation.slides.findIndex(slide => slide.id == editor.selectionSlide?.selectedSlideId)
+   
+    const newSlides = [...editor.presentation.slides]
+
+    const getNewObj = (slides: SlideType[], objectId: string): SlideObj | null => {
+        const selectedObj = slides[activeSlideIndex].content.findIndex((elem) => elem.id == objectId)
+        if (selectedObj === -1) {
+            return null;
+        }   
+        const newObj: SlideObj = slides[activeSlideIndex].content[selectedObj];
+        slides[activeSlideIndex] = deleteSlideObjs(newSlides[activeSlideIndex], [slides[activeSlideIndex].content[selectedObj].id])
+        return newObj
+    }
+
+    let newPosObj = getNewObj(newSlides, params.slideObjId);
+    if (newPosObj === null) {
+        return{...editor}
+    }
+    newPosObj = changeObjPosition(newPosObj, params.newPosition);
+    newSlides[activeSlideIndex] = addSlideObj(newSlides[activeSlideIndex], newPosObj)
+    
+    return {
+        ...editor,
+        presentation: {
+            ...editor.presentation, 
+            slides: newSlides
+        }
+    }
+}
+
+const setBackgroundColor = (editor: EditorType, newColor: string): EditorType => {
+    const activeSlideIndex = editor.presentation.slides.findIndex(slide => slide.id == editor.selectionSlide?.selectedSlideId)
+   
+    const newSlides = [...editor.presentation.slides]
+    newSlides[activeSlideIndex] = changeBackgroundToColor(newSlides[activeSlideIndex], {type: BgType.color, color: newColor})
+    return {
+        ...editor,
+        presentation: {
+            ...editor.presentation, 
+            slides: newSlides
+        }
+    }
+}
+
 
 export {
     createSlide, 
@@ -147,5 +195,7 @@ export {
     editTextFontcolor,
     editTextBgcolor,
     changeBackgroundToImage,
-    changeBackgroundToColor
+    changeBackgroundToColor,
+    updateSlideObjPosition,
+    setBackgroundColor
 }

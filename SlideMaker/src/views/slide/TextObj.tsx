@@ -1,12 +1,21 @@
+import { TextEditor } from "../../components/textEditor/TextEditor.tsx";
 import {TextObj} from "../../storage/Slide.ts";
-import {CSSProperties} from "react";
+import {CSSProperties, useState} from "react";
 
 type TextObjectProps = {
     textObject: TextObj,
     scale?: number,
     isSelected: boolean,
 }
+
 const TextObject = ({textObject, scale = 1, isSelected}: TextObjectProps) => {
+    const [isEditing, setIsEditing] = useState(false);
+
+    const handleContextMenu = (e: React.MouseEvent) => {
+        e.preventDefault();
+        setIsEditing(true);
+    };
+
     const textObjectStyles: CSSProperties = {
         position: 'absolute',
         top: `${textObject.position.y * scale}px`,
@@ -23,7 +32,19 @@ const TextObject = ({textObject, scale = 1, isSelected}: TextObjectProps) => {
     }
 
     return (
-        <p style={textObjectStyles}>{textObject.textcontent}</p>
+        <>
+            <div onContextMenu={handleContextMenu} style={textObjectStyles}>
+                    {textObject.textcontent}
+            </div>
+            {isEditing && (
+                <TextEditor
+                    initialText={textObject.textcontent!}
+                    position={{ x: textObject.position.x, y: textObject.position.y }}
+                    onClose={() => setIsEditing(false)}
+                    objectId={textObject.id}
+                />
+        )}
+    </>
     )
 }
 

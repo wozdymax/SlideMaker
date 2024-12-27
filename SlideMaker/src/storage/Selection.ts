@@ -1,12 +1,22 @@
-import {EditorType, SelectionType} from "./EditorType.ts";
+import {EditorType, SelectionSlide, SelectionObj} from "./EditorType.ts";
 
-const setSelection = (editor: EditorType, newSelection: SelectionType): EditorType => {
+const setSelectionSlide = (editor: EditorType, newSelection: SelectionSlide): EditorType => {
+    if (editor.selectionSlide == newSelection){
+        return {...editor}
+    }
     return {
         ...editor,
-        selection: newSelection,
+        selectionSlide: newSelection,
+        selectionObj: {selectedObjId: ""}
+    }
+}
+const setSelectionObj = (editor: EditorType, newSelection: SelectionObj): EditorType => {
+    return {
+        ...editor,
+        selectionObj: newSelection,
     }
 }
 
 export {
-    setSelection,
+    setSelectionSlide, setSelectionObj
 }

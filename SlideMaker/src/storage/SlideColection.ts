@@ -1,8 +1,22 @@
 import { PresentationType } from "./Presentation"
 import { createSlide, SlideType } from "./Slide"
+import {EditorType} from "./EditorType.ts";
 
-const addSlide = (pres: PresentationType, newSlide: SlideType): PresentationType => {
-    return{...pres, slides: [...pres.slides, newSlide]};
+const setSlides = (editor: EditorType, newSlides: SlideType[]): EditorType => {
+    return {
+        ...editor,
+        presentation:{name: editor.presentation.name, slides: newSlides} 
+    }
+}
+
+const addSlide = (pres: PresentationType, newSlide: SlideType, id: string): PresentationType => {
+    const activeSlideIndex = pres.slides.findIndex(slide => slide.id == id)
+    if (activeSlideIndex == -1) {
+        return{...pres, slides: [newSlide]};
+    }
+    const newSlides = pres.slides
+    newSlides.splice(activeSlideIndex + 1, 0, newSlide);
+    return{...pres, slides: newSlides};
 }
 
 const deleteSlides = (pres: PresentationType, ids: string[]): PresentationType => {
@@ -22,4 +36,4 @@ const moveSlides = (pres: PresentationType, ids: string[], movePosition: number)
     return {...pres, slides: newSlideCollection};
 }
 
-export{addSlide, deleteSlides, moveSlides}
+export{addSlide, deleteSlides, moveSlides, setSlides}

@@ -2,12 +2,10 @@ import { EditorType } from "../EditorType"
 import { BgColor, changeBackgroundToColor } from "../Slide"
 
 const EditBackroundToColor = (editor: EditorType, color: BgColor): EditorType => {
-    const slideId = editor.selection?.selectedSlideId
-    const slideIndex = editor.presentation.slides.findIndex(slide => slide.id == slideId)
-
+    const activeSlideIndex = editor.presentation.slides.findIndex(slide => slide.id == editor.selectionSlide?.selectedSlideId)
 
     const newSlides = [...editor.presentation.slides];
-    newSlides[slideIndex] = changeBackgroundToColor(newSlides[slideIndex], color);
+    newSlides[activeSlideIndex] = changeBackgroundToColor(newSlides[activeSlideIndex], color);
 
     return {
         ...editor,

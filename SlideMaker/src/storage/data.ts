@@ -21,21 +21,18 @@ slide2 = addSlideObj(slide2, text2);
 slide2 = changeBackgroundToImage(slide2, {type: BgType.image, url: "https://avatars.mds.yandex.net/i?id=dd140583fc56ad01241b887adfee0161_l-4770953-images-thumbs&n=13"});
 
 slide1.isSelected = true;
-presentation = addSlide(presentation, slide1);
-presentation = addSlide(presentation, slide2);
+presentation = addSlide(presentation, slide1, "");
+presentation = addSlide(presentation, slide2, slide1.id);
 
-const text: TextObj = createTextSlideObj({x: 100, y: 100}, {w:150, h:90});
-text.textcontent = "Добавили текст";
 
-const defaultEditor: EditorType = {
+const savedEditorState = localStorage.getItem('editorState');
+
+const defaultEditor: EditorType = savedEditorState ? JSON.parse(savedEditorState) : {
     presentation,
-    selection: {
-        selectedSlideId: presentation.slides[0].id,
-        selectedObjId: presentation.slides[0].content[0].id
-    }
+    selectionSlide: {selectedSlideId: presentation.slides[0].id},
+    selectionObj: {selectedObjId: ''},
 }
 
 export {
-    defaultEditor,
-    text
+    defaultEditor
 }

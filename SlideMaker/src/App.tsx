@@ -11,25 +11,22 @@ type AppProps = {
 
 const App = ({editor}: AppProps) => {
     const slideSearch = (editor: EditorType): SlideType => {
-        const selectedSlides = editor.presentation.slides.map((slide) => {
-            if (slide.id === editor.selection?.selectedSlideId) {
-                return slide;
-            }
-        });
-        const selectedSlide = selectedSlides.find(slide => slide !== undefined)
-        if (selectedSlide === undefined) {
+        const selectedSlides = editor.presentation.slides.filter((slide) => slide.id === editor.selectionSlide?.selectedSlideId)
+        if (selectedSlides[0] === undefined) {
             return editor.presentation.slides[0];
         }   
-        return selectedSlide 
+        return selectedSlides[0] 
     }
 
     return (
         <>
             <TopPanel name={editor.presentation.name}/>
             <div className={styles.container}>
-                <SlidesList slides={editor.presentation.slides} selection={editor.selection!}/>
+                <SlidesList slides={editor.presentation.slides} selectionSlide={editor.selectionSlide!} selectionObj={editor.selectionObj!}/>
                 
-                <Workspace slide={slideSearch(editor)}/>
+                <Workspace slide={slideSearch(editor)} editor={editor}>
+                
+                </Workspace>
             </div>
         </>
     )

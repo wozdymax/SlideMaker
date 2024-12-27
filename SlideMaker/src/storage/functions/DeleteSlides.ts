@@ -3,15 +3,11 @@ import { deleteSlides } from "../SlideColection"
 
 const deleteSlidesEditor = (editor: EditorType): EditorType => {
     const slidesIdSearch = (editor: EditorType): string[] => {
-        const selectedSlidesId = editor.presentation.slides.map((slide) => {
-            if (slide.id === editor.selection?.selectedSlideId) {
-                return slide.id;
-            }
-        });
-        if (selectedSlidesId !== undefined) {
-            return selectedSlidesId;
+        const selectedSlides = editor.presentation.slides.filter((slide) => slide.id === editor.selectionSlide?.selectedSlideId)
+        if (selectedSlides[0] === undefined) {
+            return [""];
         }   
-        return [];
+        return [selectedSlides[0].id] 
     }
 
     return {
