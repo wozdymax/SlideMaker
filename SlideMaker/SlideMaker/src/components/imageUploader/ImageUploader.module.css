@@ -1,0 +1,26 @@
+.uploader {
+    display: inline-block;
+}
+
+.uploadButton {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 16px;
+    font-size: 1em;
+    font-weight: 500;
+    background-color: lightsteelblue;
+    color: #202179;
+    border: 3px solid #18195b;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: border-color 0.25s;
+    outline: none;
+}
+
+.uploadButton:hover {
+    border-color: #646cff;
+}
+
+.fileInput {
+    display: none;
+}

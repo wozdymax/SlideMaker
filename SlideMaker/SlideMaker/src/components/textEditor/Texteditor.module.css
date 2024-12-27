@@ -1,0 +1,42 @@
+.editor {
+    position: absolute;
+    background: #9fa3c6;
+    border: 1px solid #565c92;
+    border-radius: 4px;
+    padding: 8px;
+    box-shadow: 0 2px 8px rgba(255, 255, 255, );
+    z-index: 10;
+}
+
+.textarea {
+    width: 200px;
+    height: 100px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #ffffff;
+    color: #000000;
+    margin-bottom: 8px;
+}
+
+.buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.saveButton, .cancelButton {
+    padding: 6px 12px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+}
+
+.saveButton {
+    background: #8ef495;
+    color: #353a3e;
+}
+
+.cancelButton {
+    background: #f19393;
+    color: #353a3e;
+}
