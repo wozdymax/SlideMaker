@@ -1,14 +1,18 @@
 import { TextEditor } from "../../components/textEditor/TextEditor.tsx";
-import {TextObj} from "../../storage/Slide.ts";
+import {Size, TextObj} from "../../storage/Slide.ts";
 import {CSSProperties, useState} from "react";
+import styles from './Obj.module.css';
+import { useResizeDnD } from "../../hooks/useResizeDnD.ts";
 
 type TextObjectProps = {
     textObject: TextObj,
     scale?: number,
+    maxSize: Size,
     isSelected: boolean,
+    onResize: (slideObjId: string, newSize: { w: number, h: number }) => void,
 }
 
-const TextObject = ({textObject, scale = 1, isSelected}: TextObjectProps) => {
+const TextObject = ({textObject, scale = 1, maxSize, isSelected, onResize}: TextObjectProps) => {
     const [isEditing, setIsEditing] = useState(false);
 
     const handleContextMenu = (e: React.MouseEvent) => {
@@ -16,36 +20,47 @@ const TextObject = ({textObject, scale = 1, isSelected}: TextObjectProps) => {
         setIsEditing(true);
     };
 
-    const textObjectStyles: CSSProperties = {
+    const { handleMouseDown } = useResizeDnD(
+        textObject.id,
+        textObject.size,
+        textObject.position,
+            maxSize,
+            scale,
+            onResize
+        );
+
+    const textObjStyles: CSSProperties = {
         position: 'absolute',
         top: `${textObject.position.y * scale}px`,
         left: `${textObject.position.x * scale}px`,
         width: `${textObject.size.w * scale}px`,
         height: `${textObject.size.h * scale}px`,
         fontSize: `${textObject.fontsize * scale}px`,
-        font: `${textObject.font}`,
-        color: `${textObject.fontcolor}`,
-        backgroundColor: `${textObject.bgcolor}`,
-    }
-    if (isSelected) {
-        textObjectStyles.border = '2px solid #0b57d0'
+        fontFamily: textObject.font,
+        color: textObject.fontcolor,
+        border: isSelected ? '2px solid #0b57d0' : 'none',
     }
 
     return (
-        <>
-            <div onContextMenu={handleContextMenu} style={textObjectStyles}>
-                    {textObject.textcontent}
+        <div style={textObjStyles} className={styles.wrapper}>
+            <div onContextMenu={handleContextMenu} className={styles.content} >
+                {textObject.textcontent}
             </div>
+            {isSelected && (
+                <div className={styles.resizeHandle} onMouseDown={handleMouseDown} />
+                )}
             {isEditing && (
-                <TextEditor
-                    initialText={textObject.textcontent!}
-                    position={{ x: textObject.position.x, y: textObject.position.y }}
-                    onClose={() => setIsEditing(false)}
-                    objectId={textObject.id}
-                />
-        )}
-    </>
-    )
+    <TextEditor
+        initialText={textObject.textcontent!}
+        initialFontFamily={textObject.font}
+        initialFontSize={textObject.fontsize}
+        onClose={() => setIsEditing(false)}
+        objectId={textObject.id}
+    />
+)}
+
+        </div>
+    );
 }
 
 export {

@@ -9,7 +9,7 @@ import { deleteSlidesEditor } from "../../storage/functions/DeleteSlides";
 import { addSlideObjEditor } from "../../storage/functions/AddSlideObj";
 import { deleteSlideObjEditor } from "../../storage/functions/DeleteSlideObj";
 import { renamePresentationEditor } from "../../storage/functions/RenamePresentation";
-import { ColorPicker } from "../../components/colorPicker/ColorPicker";
+import { BgSelector } from "../../components/BgSelector/BgSelector";
 import { ImageUploader } from "../../components/imageUploader/ImageUploader";
 import { ExportButton } from "../../components/button/ExportButton";
 import { ImportButton } from "../../components/button/ImportButton";
@@ -63,11 +63,11 @@ const TopPanel = ({name}: TopPanelProps) => {
                 <Button text='Добавить слайд' onClick={onAddSlide} className={styles.button} />
                 <Button text='Удалить слайд' onClick={onDeleteSlides} className={styles.button} />
                 <Button text='Добавить текст' onClick={onAddText} className={styles.button} />
-                <ImageUploader />
+                <ImageUploader imgType="obj" />
                 <Button text='Удалить объект' onClick={onDeleteObj} className={styles.button} />
                 <div className={styles.button}>
                     <Button text='Изменить фон' onClick={() => setIsColorPickerOpen(true)} className={styles.buton} />
-                    <ColorPicker isOpen={isColorPickerOpen} onClose={() => setIsColorPickerOpen(false)} />
+                    <BgSelector isOpen={isColorPickerOpen} onClose={() => setIsColorPickerOpen(false)} />
                 </div>
                 <ImportButton className={styles.button} onImport={handleImport}/>
                 <ExportButton className={styles.button} presentatationName={name}/>

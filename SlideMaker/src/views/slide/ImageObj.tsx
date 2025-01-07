@@ -1,39 +1,52 @@
-import {ImageObj} from "../../storage/Slide.ts";
-import {CSSProperties} from "react";
-
-
+import { ImageObj, Size } from "../../storage/Slide.ts";
+import { CSSProperties } from "react";
+import styles from './Obj.module.css';
+import { useResizeDnD } from "../../hooks/useResizeDnD.ts";
 
 type ImageObjectProps = {
     imageObject: ImageObj,
     scale?: number,
+    maxSize: Size,
     isSelected: boolean,
+    onResize: (slideObjId: string, newSize: { w: number, h: number }) => void,
 }
 
+const ImageObject = ({ imageObject, scale = 1, maxSize, isSelected, onResize }: ImageObjectProps) => {
+    const { handleMouseDown } = useResizeDnD(
+        imageObject.id,
+        imageObject.size,
+        imageObject.position,
+        maxSize,
+        scale,
+        onResize
+    );
 
-
-const ImageObject = ({imageObject, scale = 1, isSelected}: ImageObjectProps) => {
-    const imageObjectStyles: CSSProperties = {
+    const containerStyles: CSSProperties = {
         position: 'absolute',
         top: `${imageObject.position.y * scale}px`,
         left: `${imageObject.position.x * scale}px`,
         width: `${imageObject.size.w * scale}px`,
         height: `${imageObject.size.h * scale}px`,
-    }
+    };
 
-
-    if (isSelected) {
-        imageObjectStyles.border = '2px solid #0b57d0'
-    }
-
-
+    const imageStyles: CSSProperties = {
+        width: '100%',
+        height: '100%',
+        border: isSelected ? '2px solid #0b57d0' : 'none'
+    };
 
     return (
-        <img style={imageObjectStyles} src={imageObject.url}/>
-    )
-}
+        <div style={containerStyles}>
+            <img style={imageStyles} src={imageObject.url} />
+            {isSelected && (
+                <div
+                    className={styles.resizeHandle}
+                    onMouseDown={handleMouseDown}
+                />
+            )}
+        </div>
+    );
+};
 
+export { ImageObject };
 
-
-export {
-    ImageObject,
-}

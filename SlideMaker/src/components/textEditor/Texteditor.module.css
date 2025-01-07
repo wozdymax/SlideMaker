@@ -5,10 +5,35 @@
     border-radius: 4px;
     padding: 8px;
     box-shadow: 0 2px 8px rgba(255, 255, 255, );
+    z-index: 5;
+    font-size: 16px;
+}
+
+.controls {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+    position: relative;
     z-index: 10;
 }
 
+.fontSelect {
+    position: relative;
+    padding: 4px 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: white;
+    color:#000000;
+    min-width: 120px;
+    visibility: visible;
+    cursor: pointer;
+    pointer-events: auto;
+    z-index: 10;
+} 
+
 .textarea {
+    top: 30px;
+    left: 30px;
     width: 200px;
     height: 100px;
     padding: 8px;

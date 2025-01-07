@@ -13,7 +13,7 @@ const App = ({editor}: AppProps) => {
     const slideSearch = (editor: EditorType): SlideType => {
         const selectedSlides = editor.presentation.slides.filter((slide) => slide.id === editor.selectionSlide?.selectedSlideId)
         if (selectedSlides[0] === undefined) {
-            return editor.presentation.slides[0];
+            return editor.presentation.slides[0]; 
         }   
         return selectedSlides[0] 
     }
