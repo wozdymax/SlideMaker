@@ -1,6 +1,7 @@
 .selectWrapper {
     position: relative;
     width: auto;
+    color: #000000;
 }
 
 .placeholder {
@@ -23,11 +24,12 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     margin: 0;
     padding: 4px 0;
+    color: #000000;
     gap: 2px;
     list-style: none;
     max-height: 100px;
     overflow-y: auto;
-    z-index: 1000;
+    z-index: 10;
 }
 
 [data-is-active="true"] .placeholder {

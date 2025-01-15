@@ -3,9 +3,9 @@ import styles from "./Button.module.css";
 import { validatePresentation } from "../../storage/schema";
 
 type ImportButtonProps = {
-    onImport: (data: any) => void,
-    className: string,
-}
+    onImport: (data: any) => void;
+    className: string;
+};
 
 const ImportButton = ({ onImport, className }: ImportButtonProps) => {
     const handleFileSelect = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -15,13 +15,13 @@ const ImportButton = ({ onImport, className }: ImportButtonProps) => {
         try {
             const text = await file.text();
             const data = JSON.parse(text);
-            
+
             const { isValid, errors } = validatePresentation(data);
-            
+
             if (!isValid) {
                 throw new Error(`Неправильный формат презентации: ${JSON.stringify(errors)}`);
             }
-            
+
             onImport(data);
         } catch (error) {
             alert(`Ошибка импорта файла: ${(error as Error).message}`);
@@ -30,15 +30,10 @@ const ImportButton = ({ onImport, className }: ImportButtonProps) => {
 
     return (
         <label className={`${className} ${styles.importButton}`}>
-            <input
-                type="file"
-                accept="application/json"
-                onChange={handleFileSelect}
-                className={styles.fileInput}
-            />
-            Импортировать документ
+            <input type="file" accept="application/json" onChange={handleFileSelect} className={styles.fileInput} />
+            Импорт
         </label>
     );
 };
 
-export {ImportButton}
+export { ImportButton };

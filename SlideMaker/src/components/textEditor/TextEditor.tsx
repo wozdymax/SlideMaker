@@ -1,28 +1,31 @@
-import { useState, useRef, useEffect } from 'react';
-import styles from './TextEditor.module.css';
-import { dispatch } from '../../storage/editor.ts';
-import { editText } from '../../storage/functions/EditText.ts';
-import { Select } from '../select/Select.tsx';
-import { fontFamilies, fontSizes } from '../select/options.ts';
+import { useState, useRef, useEffect } from "react";
+import styles from "./TextEditor.module.css";
+import { Select } from "../select/Select.tsx";
+import { fontFamilies, fontSizes } from "../select/options.ts";
+import { useAppActions } from "../../views/hooks/useAppActions.ts";
 
 type TextEditorProps = {
     initialText: string;
-    initialFontFamily?: string;
-    initialFontSize?: number;
+    initialFontFamily: string;
+    initialFontSize: number;
+    initialFontColor: string;
     onClose: () => void;
     objectId: string;
 };
 
-const TextEditor = ({ 
-    initialText, 
+const TextEditor = ({
+    initialText,
     initialFontFamily,
-    initialFontSize, 
-    onClose, 
-    objectId 
+    initialFontSize,
+    initialFontColor,
+    onClose,
+    objectId,
 }: TextEditorProps) => {
+    const { editText } = useAppActions();
     const [text, setText] = useState(initialText);
     const [fontFamily, setFontFamily] = useState(initialFontFamily);
     const [fontSize, setFontSize] = useState(initialFontSize);
+    const [fontColor, setFontColor] = useState(initialFontColor);
     const editorRef = useRef<HTMLTextAreaElement>(null);
 
     useEffect(() => {
@@ -32,47 +35,43 @@ const TextEditor = ({
     }, []);
 
     const handleSave = () => {
-        dispatch(editText, { 
-            objectId, 
-            text,
-            fontFamily,
-            fontSize 
-        });
+        editText(objectId, text, fontFamily, fontSize, fontColor);
         onClose();
     };
 
     const handleFontFamilySelect = (value: string) => {
         setFontFamily(value);
-      };
+    };
 
-      const handleFontSizeSelect = (value: string) => {
+    const handleFontSizeSelect = (value: string) => {
         setFontSize(Number(value));
-      };
+    };
 
     return (
         <div className={styles.editor} style={{ top: 0 }}>
             <div className={styles.controls}>
-            <Select
-                mode='cells'
-                options={fontFamilies}
-                selected={fontFamily || 'Arial'}
-                onChange={handleFontFamilySelect}
-            />
-            <Select
-                mode='cells'
-                options={fontSizes}
-                selected={fontSize || 16}
-                onChange={handleFontSizeSelect}
-            />
+                <Select
+                    mode="cells"
+                    options={fontFamilies}
+                    selected={fontFamily || "Arial"}
+                    onChange={handleFontFamilySelect}
+                />
+                <Select mode="cells" options={fontSizes} selected={fontSize || 16} onChange={handleFontSizeSelect} />
+                <input
+                    type="color"
+                    value={fontColor}
+                    onChange={(e) => setFontColor(e.target.value)}
+                    className={styles.colorPicker}
+                />
             </div>
             <textarea
                 ref={editorRef}
                 value={text}
                 onChange={(e) => setText(e.target.value)}
                 className={styles.textarea}
-                style={{ 
+                style={{
                     fontFamily: fontFamily,
-                    fontSize: `${fontSize}px`
+                    fontSize: `${fontSize}px`,
                 }}
             />
             <div className={styles.buttons}>
@@ -87,4 +86,4 @@ const TextEditor = ({
     );
 };
 
-export {TextEditor}
+export { TextEditor };

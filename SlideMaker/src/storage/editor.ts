@@ -1,36 +1,30 @@
-import {defaultEditor} from './data.ts'
-import { EditorType } from './EditorType.ts'
+import { defaultEditor } from "./data.ts";
+import { EditorType } from "./EditorType.ts";
 
-let _editor: EditorType = defaultEditor
-let _handler: Function | null = null
+let _editor: EditorType = defaultEditor;
+let _handler: Function | null = null;
 
 const getEditor = () => {
-    return _editor
-}
+    return _editor;
+};
 
 const setEditor = (newEditor: EditorType) => {
-    _editor = newEditor
-}
+    _editor = newEditor;
+};
 
 const dispatch = (modifyFn: Function, payload?: Object) => {
-    
-    const newEditor = modifyFn(_editor, payload)
-    setEditor(newEditor)
+    const newEditor = modifyFn(_editor, payload);
+    setEditor(newEditor);
 
     if (_handler) {
-        _handler()
+        _handler();
     }
 
-    localStorage.setItem('editorState', JSON.stringify(newEditor));
-}
+    localStorage.setItem("editorState", JSON.stringify(newEditor));
+};
 
-const addEditorChangeHandler = (handler: Function)  => {
-    _handler = handler
-}
+const addEditorChangeHandler = (handler: Function) => {
+    _handler = handler;
+};
 
-
-export {
-    getEditor,
-    dispatch,
-    addEditorChangeHandler,
-}
+export { getEditor, dispatch, addEditorChangeHandler };

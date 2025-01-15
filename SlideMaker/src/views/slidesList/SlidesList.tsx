@@ -1,47 +1,36 @@
-import { SelectionObj, SelectionSlide } from "../../storage/EditorType.ts";
-import { SlideType } from "../../storage/Slide.ts";
-import { Slide } from '../slide/Slide.tsx'
-import { dispatch } from "../../storage/editor.ts";
-import styles from './SlidesList.module.css';
-import { setSelectionSlide } from "../../storage/Selection.ts";
-import { useSlidesDnD } from "../../hooks/useSlidesDnD.ts";
+import { Slide } from "../slide/Slide.tsx";
+import styles from "./SlidesList.module.css";
+import { useSlidesDnD } from "../hooks/useSlidesDnD.ts";
+import { useAppActions } from "../hooks/useAppActions.ts";
+import { useAppSelector } from "../hooks/useAppSelector.ts";
 
-const SLIDE_PREVIEW_SCALE = 0.2
+const SLIDE_PREVIEW_SCALE = 0.2;
 
-type SlidesListProps = {
-    slides: Array<SlideType>,
-    selectionSlide: SelectionSlide,
-    selectionObj: SelectionObj,
-}
+const SlidesList = () => {
+    const editor = useAppSelector((editor) => editor);
+    const { setSelectionSlide } = useAppActions();
 
-const SlidesList = ({slides, selectionSlide, selectionObj}: SlidesListProps) => {
-    const { draggedIndex, handleDragStart, handleDragEnd, handleDragOver } = useSlidesDnD(slides);
+    const { draggedIndex, handleDragStart, handleDragEnd, handleDragOver } = useSlidesDnD(editor.presentation.slides);
 
     const onSlideClick = (slideId: string) => {
-        dispatch(setSelectionSlide, {
+        setSelectionSlide({
             selectedSlideId: slideId,
         });
-    }
+    };
 
     return (
         <div className={styles.slidesList}>
-            {slides.map((slide, index) => (
-                <div 
+            {editor.presentation.slides.map((slide, index) => (
+                <div
                     key={slide.id}
-                    className={`${styles.slideWrapper} ${draggedIndex === index ? styles.dragging : ''}`}
+                    className={`${styles.slideWrapper} ${draggedIndex === index ? styles.dragging : ""}`}
                     onClick={() => onSlideClick(slide.id)}
                     draggable={true}
                     onDragStart={() => handleDragStart(index)}
                     onDragEnd={handleDragEnd}
                     onDragOver={(e) => handleDragOver(e, index)}
                 >
-                    <Slide
-                        slide={slide}
-                        scale={SLIDE_PREVIEW_SCALE}
-                        isSelected={slide.id === selectionSlide.selectedSlideId}
-                        className={styles.item}
-                        selectionObj={selectionObj}
-                    />
+                    <Slide slide={slide} scale={SLIDE_PREVIEW_SCALE} className={styles.item} />
                 </div>
             ))}
         </div>

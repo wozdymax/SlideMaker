@@ -1,28 +1,31 @@
 import { ImageObj, Size } from "../../storage/Slide.ts";
 import { CSSProperties } from "react";
-import styles from './Obj.module.css';
-import { useResizeDnD } from "../../hooks/useResizeDnD.ts";
+import styles from "./Obj.module.css";
+import { useResizeDnD } from "../hooks/useResizeDnD.ts";
+import { useAppSelector } from "../hooks/useAppSelector.ts";
 
 type ImageObjectProps = {
-    imageObject: ImageObj,
-    scale?: number,
-    maxSize: Size,
-    isSelected: boolean,
-    onResize: (slideObjId: string, newSize: { w: number, h: number }) => void,
-}
+    imageObject: ImageObj;
+    scale?: number;
+    maxSize: Size;
+    onResize: (slideObjId: string, newSize: { w: number; h: number }) => void;
+};
 
-const ImageObject = ({ imageObject, scale = 1, maxSize, isSelected, onResize }: ImageObjectProps) => {
+const ImageObject = ({ imageObject, scale = 1, maxSize, onResize }: ImageObjectProps) => {
+    const selectionObj = useAppSelector((editor) => editor.selectionObj);
+    const isSelected = imageObject.id == selectionObj.selectedObjId;
+
     const { handleMouseDown } = useResizeDnD(
         imageObject.id,
         imageObject.size,
         imageObject.position,
         maxSize,
         scale,
-        onResize
+        onResize,
     );
 
     const containerStyles: CSSProperties = {
-        position: 'absolute',
+        position: "absolute",
         top: `${imageObject.position.y * scale}px`,
         left: `${imageObject.position.x * scale}px`,
         width: `${imageObject.size.w * scale}px`,
@@ -30,23 +33,17 @@ const ImageObject = ({ imageObject, scale = 1, maxSize, isSelected, onResize }: 
     };
 
     const imageStyles: CSSProperties = {
-        width: '100%',
-        height: '100%',
-        border: isSelected ? '2px solid #0b57d0' : 'none'
+        width: "100%",
+        height: "100%",
+        border: isSelected ? "2px solid #0b57d0" : "none",
     };
 
     return (
         <div style={containerStyles}>
             <img style={imageStyles} src={imageObject.url} />
-            {isSelected && (
-                <div
-                    className={styles.resizeHandle}
-                    onMouseDown={handleMouseDown}
-                />
-            )}
+            {isSelected && <div className={styles.resizeHandle} onMouseDown={handleMouseDown} />}
         </div>
     );
 };
 
 export { ImageObject };
-

@@ -7,6 +7,7 @@
     box-shadow: 0 2px 8px rgba(255, 255, 255, );
     z-index: 5;
     font-size: 16px;
+    color:#000000;
 }
 
 .controls {
@@ -65,3 +66,17 @@
     background: #f19393;
     color: #353a3e;
 }
+
+.colorPicker {
+    width: 40px;
+    height: 32px;
+    padding: 2px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.colorPicker:hover {
+    border-color: #0b57d0;
+}
+

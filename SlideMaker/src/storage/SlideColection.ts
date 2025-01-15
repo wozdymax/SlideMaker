@@ -1,39 +1,35 @@
-import { PresentationType } from "./Presentation"
-import { createSlide, SlideType } from "./Slide"
-import {EditorType} from "./EditorType.ts";
-
-const setSlides = (editor: EditorType, newSlides: SlideType[]): EditorType => {
-    return {
-        ...editor,
-        presentation:{name: editor.presentation.name, slides: newSlides} 
-    }
-}
+import { PresentationType } from "./Presentation";
+import { createSlide, SlideType } from "./Slide";
 
 const addSlide = (pres: PresentationType, newSlide: SlideType, id: string): PresentationType => {
-    const activeSlideIndex = pres.slides.findIndex(slide => slide.id == id)
+    const activeSlideIndex = pres.slides.findIndex((slide) => slide.id == id);
     if (activeSlideIndex == -1) {
-        return{...pres, slides: [newSlide]};
+        return { ...pres, slides: [newSlide] };
     }
-    const newSlides = pres.slides
+    const newSlides = pres.slides;
     newSlides.splice(activeSlideIndex + 1, 0, newSlide);
-    return{...pres, slides: newSlides};
-}
+    return { ...pres, slides: newSlides };
+};
 
 const deleteSlides = (pres: PresentationType, ids: string[]): PresentationType => {
     const newSlideCollection = pres.slides.filter((slide) => !ids.includes(slide.id));
     if (newSlideCollection.length > 0) {
-        return{...pres, slides: newSlideCollection}
+        return { ...pres, slides: newSlideCollection };
     }
     const newSlide: SlideType = createSlide();
-    return{...pres, slides: [newSlide]} 
-}
+    return { ...pres, slides: [newSlide] };
+};
 
 const moveSlides = (pres: PresentationType, ids: string[], movePosition: number): PresentationType => {
     const movingSlides = pres.slides.filter((slide) => ids.includes(slide.id));
     const remainingSlides = pres.slides.filter((slide) => !ids.includes(slide.id));
-    const newSlideCollection = [...remainingSlides.slice(0, movePosition), ...movingSlides, ...remainingSlides.slice(movePosition)];
-  
-    return {...pres, slides: newSlideCollection};
-}
+    const newSlideCollection = [
+        ...remainingSlides.slice(0, movePosition),
+        ...movingSlides,
+        ...remainingSlides.slice(movePosition),
+    ];
 
-export{addSlide, deleteSlides, moveSlides, setSlides}
+    return { ...pres, slides: newSlideCollection };
+};
+
+export { addSlide, deleteSlides, moveSlides };

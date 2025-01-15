@@ -1,16 +1,15 @@
-import {PresentationType} from "./Presentation.ts";
-
+import { PresentationType } from "./Presentation.ts";
 
 export type SelectionSlide = {
-    selectedSlideId: string,
-}
+    selectedSlideId: string;
+};
 
 export type SelectionObj = {
-    selectedObjId: string,
-}
+    selectedObjId: string;
+};
 
 export type EditorType = {
-    presentation: PresentationType,
-    selectionSlide: SelectionSlide,
-    selectionObj: SelectionObj,
-}
+    presentation: PresentationType;
+    selectionSlide: SelectionSlide;
+    selectionObj: SelectionObj;
+};

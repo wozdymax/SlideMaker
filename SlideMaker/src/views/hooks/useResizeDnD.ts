@@ -1,18 +1,18 @@
-import { useState, useEffect } from 'react';
-import { Size } from '../storage/Slide.ts';
+import { useState, useEffect } from "react";
+import { Size } from "../../storage/Slide.ts";
 
 const MIN_SIZE = 50;
 
 export const useResizeDnD = (
     objectId: string,
     initialSize: Size,
-    position: { x: number, y: number },
+    position: { x: number; y: number },
     maxSize: Size,
     scale: number,
-    onResize: (id: string, newSize: Size) => void
+    onResize: (id: string, newSize: Size) => void,
 ) => {
     const [isResizing, setIsResizing] = useState(false);
-    const [startMousePosition, setStartMousePosition] = useState<{ x: number, y: number } | null>(null);
+    const [startMousePosition, setStartMousePosition] = useState<{ x: number; y: number } | null>(null);
     const [startSize, setStartSize] = useState(initialSize);
 
     const handleMouseDown = (event: React.MouseEvent) => {
@@ -31,14 +31,8 @@ export const useResizeDnD = (
             const maxWidth = maxSize.w - position.x;
             const maxHeight = maxSize.h - position.y;
 
-            const newWidth = Math.min(
-                Math.max(startSize.w + deltaX / scale, MIN_SIZE),
-                maxWidth
-            );
-            const newHeight = Math.min(
-                Math.max(startSize.h + deltaY / scale, MIN_SIZE),
-                maxHeight
-            );
+            const newWidth = Math.min(Math.max(startSize.w + deltaX / scale, MIN_SIZE), maxWidth);
+            const newHeight = Math.min(Math.max(startSize.h + deltaY / scale, MIN_SIZE), maxHeight);
 
             onResize(objectId, { w: newWidth, h: newHeight });
         }
@@ -51,17 +45,17 @@ export const useResizeDnD = (
 
     useEffect(() => {
         if (isResizing) {
-            window.addEventListener('mousemove', handleMouseMove);
-            window.addEventListener('mouseup', handleMouseUp);
+            window.addEventListener("mousemove", handleMouseMove);
+            window.addEventListener("mouseup", handleMouseUp);
         }
         return () => {
-            window.removeEventListener('mousemove', handleMouseMove);
-            window.removeEventListener('mouseup', handleMouseUp);
+            window.removeEventListener("mousemove", handleMouseMove);
+            window.removeEventListener("mouseup", handleMouseUp);
         };
     }, [isResizing]);
 
     return {
         isResizing,
-        handleMouseDown
+        handleMouseDown,
     };
 };

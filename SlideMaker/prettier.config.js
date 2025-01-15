@@ -1,1 +1,4 @@
-export default { printWidth: 120 };
+export default { 
+    printWidth: 120,
+    "tabWidth": 4, 
+};
