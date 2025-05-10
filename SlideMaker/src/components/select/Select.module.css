@@ -1,0 +1,41 @@
+.selectWrapper {
+    position: relative;
+    width: auto;
+    color: #000000;
+}
+
+.placeholder {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    background: white;
+}
+
+.placeholder:hover {
+    border-color: #0b57d0;
+}
+
+.select {
+    position: fixed;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    margin: 0;
+    padding: 4px 0;
+    color: #000000;
+    gap: 2px;
+    list-style: none;
+    max-height: 100px;
+    overflow-y: auto;
+    z-index: 10;
+}
+
+[data-is-active="true"] .placeholder {
+    border-color: #0b57d0;
+}
+
+[data-status="invalid"] .placeholder {
+    border-color: #ff4d4f;
+}
